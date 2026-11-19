@@ -78,29 +78,30 @@ Para rodar este projeto localmente, você precisará dos seguintes softwares ins
 
 🛠️ Instalação e Passo a Passo
 
-Passo 1: Clonar o Repositório
+* Passo 1: Clonar o Repositório
 
 git clone <URL_DO_SEU_REPOSITORIO>
 cd projeto-backend
 
 
-Passo 2: Instalar as Dependências
+* Passo 2: Instalar as Dependências
 
 npm install
 
 
-Passo 3: Configurar as Variáveis de Ambiente
+* Passo 3: Configurar as Variáveis de Ambiente
 
 Crie um arquivo chamado .env na raiz do projeto conforme a seção Configuração de Variáveis de Ambiente.
 
-Passo 4: Criar o Banco de Dados no MySQL
+
+* Passo 4: Criar o Banco de Dados no MySQL
 
 Abra o MySQL Command Line Client ou MySQL Workbench e execute o comando:
 
 CREATE DATABASE projeto_backend;
 
 
-Passo 5: Iniciar o Servidor
+* Passo 5: Iniciar o Servidor
 
 npm start
 
@@ -138,6 +139,8 @@ Produtos	GET	/v1/product/:id	Não	Consulta um produto por ID
 Produtos	POST	/v1/product	Sim	Cadastra um novo produto
 Produtos	PUT	/v1/product/:id	Sim	Atualiza dados de um produto
 Produtos	DELETE	/v1/product/:id	Sim	Remove um produto do sistema
+<img width="1071" height="321" alt="image" src="https://github.com/user-attachments/assets/e61631b3-bf7b-4584-ae65-f2e7a3aa25be" />
+
 
 🧪 Exemplos Práticos de Requisições (JSON e cURL)
 
@@ -238,6 +241,8 @@ Código	Nome	Significado na API
 401	Unauthorized	Token JWT ausente, inválido ou expirado
 404	Not Found	Recurso não localizado pelo ID informado
 500	Internal Server Error	Falha inesperada no servidor ou no banco de dados
+<img width="678" height="161" alt="image" src="https://github.com/user-attachments/assets/1e37a3a3-e326-441e-bdbf-fadf0890e726" />
+
 
 📤 Guia Passo a Passo do Git e GitHub
 
@@ -249,22 +254,22 @@ node_modules/
 
 2. Comandos no Terminal para Publicação:
 
-# Inicializar o repositório local
+* Inicializar o repositório local
 git init
 
-# Adicionar todos os arquivos
+* Adicionar todos os arquivos
 git add .
 
-# Criar o commit inicial
+* Criar o commit inicial
 git commit -m "feat: documentacao completa com instrucoes de setup e endpoints"
 
-# Renomear a branch principal para main
+* Renomear a branch principal para main
 git branch -M main
 
-# Conectar ao repositório do GitHub
+* Conectar ao repositório do GitHub
 git remote add origin <URL_DO_SEU_REPOSITORIO>
 
-# Enviar os arquivos para o GitHub
+* Enviar os arquivos para o GitHub
 git push -u origin main
 
 
