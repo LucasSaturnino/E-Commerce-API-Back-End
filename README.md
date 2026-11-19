@@ -1,153 +1,272 @@
-🛒 E-Commerce API (Back-End)
+# 🛒 E-Commerce API | Back-End
 
-API RESTful desenvolvida em Node.js com Express e Sequelize ORM, integrada ao banco de dados relacional MySQL. O projeto adota a arquitetura MVC (Model-View-Controller), possui autenticação de rotas via JWT (JSON Web Token) e criptografia de senhas com Bcrypt.
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-Framework-000000?style=for-the-badge&logo=express&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Sequelize](https://img.shields.io/badge/Sequelize-ORM-52B0E7?style=for-the-badge&logo=sequelize&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 
-📑 Sumário
+API RESTful desenvolvida em **Node.js**, utilizando **Express.js**, **Sequelize ORM** e **MySQL**, com foco no gerenciamento de usuários, categorias e produtos de um sistema de e-commerce.
 
-* Visão Geral
-* Tecnologias Utilizadas
-* Arquitetura e Estrutura de Pastas
-* Pré-requisitos
-* Instalação e Passo a Passo
-* Configuração de Variáveis de Ambiente
-* Documentação Complementar dos Endpoints
-* Tabela de Endpoints da API
-* Exemplos Práticos de Requisições (JSON e cURL)
-* Tabela de Códigos de Status HTTP
-* Guia Passo a Passo do Git e GitHub
+O projeto utiliza arquitetura MVC, autenticação por JSON Web Token (JWT) e criptografia de senhas com Bcrypt.
 
-🎯 Visão Geral
+---
 
-Esta aplicação fornece a infraestrutura de back-end para um sistema de e-commerce, contemplando:
+## 📑 Sumário
 
-* Gestão de Usuários: Cadastro com validação de campos, verificação de duplicidade de e-mail e armazenamento de senha criptografada via bcrypt.
-* Autenticação Segura: Emissão e validação de tokens JWT (Bearer) para proteção de rotas privadas (POST, PUT, DELETE).
-* Gestão de Categorias: Operações de CRUD e parâmetro use_in_menu para exibição na navegação principal.
-* Gestão de Produtos: CRUD completo de produtos, incluindo suporte a filtros por palavra-chave (match), seleção de atributos (fields) e paginação (limit e page).
+- [Visão Geral](#-visão-geral)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Funcionalidades](#-funcionalidades)
+- [Arquitetura do Projeto](#-arquitetura-do-projeto)
+- [Pré-requisitos](#-pré-requisitos)
+- [Instalação e Configuração](#-instalação-e-configuração)
+- [Variáveis de Ambiente](#-variáveis-de-ambiente)
+- [Endpoints da API](#-endpoints-da-api)
+- [Exemplos de Requisições](#-exemplos-de-requisições)
+- [Códigos de Status HTTP](#-códigos-de-status-http)
+- [Considerações Finais](#-considerações-finais)
 
-📊 Tabela de Tecnologias Utilizadas
+---
 
-Tecnologia	Função / Aplicação
-Node.js	Ambiente de execução JavaScript no lado do servidor
-Express.js	Framework web para gerenciamento de rotas e middlewares
-MySQL	Sistema de Gerenciamento de Banco de Dados Relacional (SGBD)
-Sequelize ORM	Mapeamento objeto-relacional para interação com o MySQL
-JWT (jsonwebtoken)	Geração e verificação de tokens de autenticação Bearer
-Bcrypt	Criptografia de senhas através de hashing seguro
-Dotenv	Carregamento de variáveis de ambiente a partir de arquivo .env
+## 🎯 Visão Geral
 
-📁 Arquitetura e Estrutura de Pastas
+O projeto consiste no desenvolvimento de uma API para fornecer a estrutura de back-end de uma aplicação de comércio eletrônico.
 
-A aplicação segue a divisão de responsabilidades da arquitetura MVC:
+A aplicação disponibiliza endpoints para operações de cadastro, consulta, atualização e exclusão de dados, além de autenticação de usuários e controle de acesso às rotas protegidas.
 
-projeto-backend/
+## 🚀 Tecnologias Utilizadas
+
+| Tecnologia | Aplicação |
+|---|---|
+| **Node.js** | Ambiente de execução JavaScript no servidor |
+| **Express.js** | Framework para criação e gerenciamento das rotas HTTP |
+| **MySQL** | Banco de dados relacional |
+| **Sequelize ORM** | Mapeamento objeto-relacional e comunicação com o banco de dados |
+| **JWT** | Autenticação e autorização por tokens |
+| **Bcrypt** | Hashing seguro de senhas |
+| **Dotenv** | Gerenciamento de variáveis de ambiente |
+
+## ⚙️ Funcionalidades
+
+### 👤 Gerenciamento de usuários
+- Cadastro de novos usuários.
+- Validação de campos obrigatórios.
+- Verificação de duplicidade de e-mail.
+- Armazenamento de senhas utilizando Bcrypt.
+- Consulta, atualização e exclusão de usuários.
+
+### 🔐 Autenticação e segurança
+- Autenticação de usuários por e-mail e senha.
+- Geração de tokens JWT.
+- Proteção de rotas privadas.
+- Validação do token por meio de middleware.
+- Utilização do padrão Bearer Token.
+
+### 📂 Gerenciamento de categorias
+- Cadastro de categorias.
+- Consulta de categorias por identificador.
+- Listagem com paginação.
+- Atualização e exclusão de categorias.
+- Controle de exibição no menu por meio do atributo `use_in_menu`.
+
+### 🛍️ Gerenciamento de produtos
+- Cadastro de produtos.
+- Consulta individual por identificador.
+- Listagem com filtros.
+- Seleção de atributos por meio do parâmetro `fields`.
+- Paginação utilizando `limit` e `page`.
+- Atualização e exclusão de produtos.
+
+---
+
+## 📁 Arquitetura do Projeto
+
+A aplicação utiliza o padrão arquitetural **MVC (Model-View-Controller)**, organizando as responsabilidades em diferentes módulos.
+
+```text
+E-Commerce-API-Back-End/
+│
 ├── src/
+│   │
 │   ├── config/
-│   │   └── database.js          # Conexão do Sequelize com o MySQL
+│   │   └── database.js
+│   │
 │   ├── controllers/
-│   │   ├── userController.js     # Regras de negócio de usuários e autenticação
-│   │   ├── categoryController.js # Regras de negócio e CRUD de categorias
-│   │   └── productController.js  # Regras de negócio e CRUD de produtos
+│   │   ├── userController.js
+│   │   ├── categoryController.js
+│   │   └── productController.js
+│   │
 │   ├── middleware/
-│   │   └── authMiddleware.js    # Interceptador e validador do Token JWT
+│   │   └── authMiddleware.js
+│   │
 │   ├── models/
-│   │   ├── User.js              # Modelo Sequelize de Usuários
-│   │   ├── Category.js          # Modelo Sequelize de Categorias
-│   │   └── Product.js           # Modelo Sequelize de Produtos
+│   │   ├── User.js
+│   │   ├── Category.js
+│   │   └── Product.js
+│   │
 │   ├── routes/
-│   │   ├── userRoutes.js         # Definição das rotas de Usuários e Login
-│   │   ├── categoryRoutes.js     # Definição das rotas de Categorias
-│   │   └── productRoutes.js      # Definição das rotas de Produtos
-│   ├── app.js                   # Configuração das rotas e middlewares do Express
-│   └── server.js                # Inicialização do servidor e sincronização com MySQL
-├── .env.example                 # Modelo das variáveis de ambiente
-├── .gitignore                   # Lista de arquivos ignorados pelo Git
-├── package.json                 # Manifesto de dependências e scripts Node.js
-└── README.md                    # Documentação principal do projeto
+│   │   ├── userRoutes.js
+│   │   ├── categoryRoutes.js
+│   │   └── productRoutes.js
+│   │
+│   ├── app.js
+│   └── server.js
+│
+├── .env.example
+├── .gitignore
+├── package.json
+├── package-lock.json
+└── README.md
+```
 
+### Responsabilidade dos diretórios
 
-📌 Pré-requisitos
+| Diretório / Arquivo | Responsabilidade |
+|---|---|
+| `config/` | Configurações de conexão com o banco de dados |
+| `controllers/` | Regras de negócio e processamento das requisições |
+| `middleware/` | Validação e proteção das rotas |
+| `models/` | Modelos e estrutura das entidades do banco |
+| `routes/` | Definição dos endpoints da API |
+| `app.js` | Configuração do Express, rotas e middlewares |
+| `server.js` | Inicialização do servidor e conexão com o banco |
 
-Para rodar este projeto localmente, você precisará dos seguintes softwares instalados:
+---
 
-1. Node.js (versão 18.x ou superior)
-2. npm (Gerenciador de pacotes, incluído junto ao Node.js)
-3. MySQL Server (ou via XAMPP / WAMP na porta 3306)
-4. Git
-5. Cliente HTTP (Opcional, para testes): Postman, Insomnia ou extensão Thunder Client no VS Code.
+## 💻 Pré-requisitos
 
-🛠️ Instalação e Passo a Passo
+Antes de executar o projeto, é necessário possuir:
 
-* Passo 1: Clonar o Repositório
+- [Node.js](https://nodejs.org/) — versão 18 ou superior.
+- npm — gerenciador de pacotes do Node.js.
+- [MySQL](https://www.mysql.com/) — banco de dados.
+- [Git](https://git-scm.com/) — para clonar o repositório.
+- [Postman](https://www.postman.com/) ou Insomnia — para testar os endpoints (opcional).
 
-git clone <URL_DO_SEU_REPOSITORIO>
-cd projeto-backend
+---
 
+## 📥 Instalação e Configuração
 
-* Passo 2: Instalar as Dependências
+### 1. Clonar o repositório
 
+```bash
+git clone https://github.com/LucasSaturnino/E-Commerce-API-Back-End.git
+```
+
+### 2. Acessar o diretório
+
+```bash
+cd E-Commerce-API-Back-End
+```
+
+### 3. Instalar as dependências
+
+```bash
 npm install
+```
 
+### 4. Criar o banco de dados
 
-* Passo 3: Configurar as Variáveis de Ambiente
+No MySQL Workbench ou em outro cliente MySQL, execute:
 
-Crie um arquivo chamado .env na raiz do projeto conforme a seção Configuração de Variáveis de Ambiente.
-
-
-* Passo 4: Criar o Banco de Dados no MySQL
-
-Abra o MySQL Command Line Client ou MySQL Workbench e execute o comando:
-
+```sql
 CREATE DATABASE projeto_backend;
+```
 
+### 5. Configurar as variáveis de ambiente
 
-* Passo 5: Iniciar o Servidor
+Crie um arquivo `.env` na raiz do projeto, seguindo o modelo apresentado na próxima seção.
 
+### 6. Iniciar a aplicação
+
+```bash
 npm start
+```
 
+Após a inicialização, o Sequelize realizará a conexão com o MySQL e sincronizará os modelos com o banco de dados, conforme a configuração da aplicação.
 
-O Sequelize conectará ao MySQL e criará as tabelas users, categories e products automaticamente.
+---
 
-⚙️ Configuração de Variáveis de Ambiente
+## 🔑 Variáveis de Ambiente
 
-Crie um arquivo .env na raiz do projeto com as seguintes chaves:
+A aplicação utiliza variáveis de ambiente para armazenar configurações de conexão e segurança.
 
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
 PORT=3000
+
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=root
 DB_PASS=sua_senha_aqui
 DB_NAME=projeto_backend
+
 JWT_SECRET=sua_chave_secreta_jwt
+```
 
+**Importante:** O arquivo `.env` contém informações sensíveis e não deve ser enviado ao GitHub. Utilize o `.env.example` como modelo de configuração.
 
-📋 Tabela de Endpoints da API
+---
 
-Recurso	Método	Endpoint	Proteção JWT	Descrição
-Usuários	POST	/v1/user	Não	Cadastra um novo usuário no banco de dados
-Usuários	POST	/v1/user/token	Não	Autentica e gera o token de acesso JWT
-Usuários	GET	/v1/user/:id	Não	Consulta dados de um usuário pelo ID
-Usuários	PUT	/v1/user/:id	Sim	Atualiza dados de um usuário
-Usuários	DELETE	/v1/user/:id	Sim	Remove um usuário do sistema
-Categorias	GET	/v1/category/search	Não	Lista categorias com paginação
-Categorias	GET	/v1/category/:id	Não	Consulta uma categoria por ID
-Categorias	POST	/v1/category	Sim	Cadastra uma nova categoria
-Categorias	PUT	/v1/category/:id	Sim	Atualiza dados de uma categoria
-Categorias	DELETE	/v1/category/:id	Sim	Remove uma categoria pelo ID
-Produtos	GET	/v1/product/search	Não	Lista produtos com filtros (match, limit, page)
-Produtos	GET	/v1/product/:id	Não	Consulta um produto por ID
-Produtos	POST	/v1/product	Sim	Cadastra um novo produto
-Produtos	PUT	/v1/product/:id	Sim	Atualiza dados de um produto
-Produtos	DELETE	/v1/product/:id	Sim	Remove um produto do sistema
-<img width="1071" height="321" alt="image" src="https://github.com/user-attachments/assets/e61631b3-bf7b-4584-ae65-f2e7a3aa25be" />
+## 🔗 Endpoints da API
 
+A API disponibiliza endpoints para gerenciamento de usuários, categorias e produtos.
 
-🧪 Exemplos Práticos de Requisições (JSON e cURL)
+**URL base local:**
 
-1. Cadastro de Usuário (POST /v1/user)
+```text
+http://localhost:3000
+```
 
-* Body (JSON):
+### 👤 Usuários
 
+| Método | Endpoint | JWT | Descrição |
+|---|---|:---:|---|
+| POST | `/v1/user` | ❌ | Cadastrar usuário |
+| POST | `/v1/user/token` | ❌ | Autenticar usuário e gerar token |
+| GET | `/v1/user/:id` | ❌ | Consultar usuário |
+| PUT | `/v1/user/:id` | ✅ | Atualizar usuário |
+| DELETE | `/v1/user/:id` | ✅ | Excluir usuário |
+
+### 📂 Categorias
+
+| Método | Endpoint | JWT | Descrição |
+|---|---|:---:|---|
+| GET | `/v1/category/search` | ❌ | Listar categorias com paginação |
+| GET | `/v1/category/:id` | ❌ | Consultar categoria |
+| POST | `/v1/category` | ✅ | Cadastrar categoria |
+| PUT | `/v1/category/:id` | ✅ | Atualizar categoria |
+| DELETE | `/v1/category/:id` | ✅ | Excluir categoria |
+
+### 🛍️ Produtos
+
+| Método | Endpoint | JWT | Descrição |
+|---|---|:---:|---|
+| GET | `/v1/product/search` | ❌ | Listar produtos com filtros |
+| GET | `/v1/product/:id` | ❌ | Consultar produto |
+| POST | `/v1/product` | ✅ | Cadastrar produto |
+| PUT | `/v1/product/:id` | ✅ | Atualizar produto |
+| DELETE | `/v1/product/:id` | ✅ | Excluir produto |
+
+**Legenda:**
+
+- ✅ Endpoint protegido por autenticação JWT.
+- ❌ Endpoint sem exigência de autenticação JWT, conforme a documentação atual.
+
+---
+
+## 🧪 Exemplos de Requisições
+
+Os exemplos abaixo demonstram algumas operações disponíveis na API.
+
+### 1. Cadastro de usuário
+
+**POST** `/v1/user`
+
+Body (JSON):
+
+```json
 {
   "firstname": "Lucas",
   "surname": "Silva",
@@ -155,67 +274,73 @@ Produtos	DELETE	/v1/product/:id	Sim	Remove um produto do sistema
   "password": "123456",
   "confirmPassword": "123456"
 }
+```
 
+### 2. Autenticação de usuário
 
-* cURL (Terminal):
+**POST** `/v1/user/token`
 
-curl -X POST http://localhost:3000/v1/user \
-  -H "Content-Type: application/json" \
-  -d '{
-    "firstname": "Lucas",
-    "surname": "Silva",
-    "email": "lucas@email.com",
-    "password": "123456",
-    "confirmPassword": "123456"
-  }'
+Body (JSON):
 
-
-2. Autenticação e Geração de Token (POST /v1/user/token)
-
-* Body (JSON):
-
+```json
 {
   "email": "lucas@email.com",
   "password": "123456"
 }
+```
 
+Resposta esperada:
 
-* Resposta Esperada (200 OK):
-
+```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+  "token": "SEU_TOKEN_JWT"
 }
+```
 
+### 3. Cadastro de categoria
 
-3. Cadastro de Categoria (POST /v1/category) — Requer Token JWT
+**POST** `/v1/category`
 
-* Header: Authorization: Bearer <SEU_TOKEN_JWT>
-* Body (JSON):
+Requer autenticação JWT.
 
+Header:
+
+```text
+Authorization: Bearer SEU_TOKEN_JWT
+```
+
+Body (JSON):
+
+```json
 {
   "name": "Calçados",
   "slug": "calcados",
   "use_in_menu": true
 }
+```
 
+Exemplo cURL:
 
-* cURL (Terminal):
-
+```bash
 curl -X POST http://localhost:3000/v1/category \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer COLE_O_TOKEN_AQUI" \
+  -H "Authorization: Bearer SEU_TOKEN_JWT" \
   -d '{
     "name": "Calçados",
     "slug": "calcados",
     "use_in_menu": true
   }'
+```
 
+### 4. Cadastro de produto
 
-4. Cadastro de Produto (POST /v1/product) — Requer Token JWT
+**POST** `/v1/product`
 
-* Header: Authorization: Bearer <SEU_TOKEN_JWT>
-* Body (JSON):
+Requer autenticação JWT.
 
+Body (JSON):
+
+```json
 {
   "enabled": true,
   "name": "Tênis Esportivo Nitro",
@@ -225,52 +350,51 @@ curl -X POST http://localhost:3000/v1/category \
   "price": 299.90,
   "price_with_discount": 249.90
 }
+```
 
+### 5. Consulta de produtos com filtros
 
-5. Busca de Produtos com Filtro (GET /v1/product/search)
+**GET** `/v1/product/search`
 
-* URL com Query Parameters: http://localhost:3000/v1/product/search?page=1&limit=12&match=Tênis
+Exemplo de URL:
 
-🚦 Tabela de Códigos de Status HTTP
+```text
+http://localhost:3000/v1/product/search?page=1&limit=12&match=Tenis
+```
 
-Código	Nome	Significado na API
-200	OK	Requisição realizada com sucesso (consultas e atualizações)
-201	Created	Recurso criado com sucesso no banco de dados
-204	No Content	Requisição concluída com sucesso sem corpo de retorno (edição/exclusão)
-400	Bad Request	Erro de validação, campos obrigatórios ausentes ou senhas divergentes
-401	Unauthorized	Token JWT ausente, inválido ou expirado
-404	Not Found	Recurso não localizado pelo ID informado
-500	Internal Server Error	Falha inesperada no servidor ou no banco de dados
-<img width="678" height="161" alt="image" src="https://github.com/user-attachments/assets/1e37a3a3-e326-441e-bdbf-fadf0890e726" />
+Parâmetros disponíveis:
 
+| Parâmetro | Descrição |
+|---|---|
+| `page` | Número da página |
+| `limit` | Quantidade de registros por página |
+| `match` | Palavra-chave utilizada na busca |
 
-📤 Guia Passo a Passo do Git e GitHub
+---
 
-1. Criar o arquivo .gitignore na raiz do projeto:
+## 🚦 Códigos de Status HTTP
 
-node_modules/
-.env
+A API utiliza códigos de status HTTP para indicar o resultado das requisições.
 
+| Código | Status | Significado |
+|:---:|---|---|
+| 200 | OK | Requisição realizada com sucesso |
+| 201 | Created | Recurso criado com sucesso |
+| 204 | No Content | Requisição concluída sem conteúdo de retorno |
+| 400 | Bad Request | Erro de validação ou dados inválidos |
+| 401 | Unauthorized | Token ausente, inválido ou expirado |
+| 404 | Not Found | Recurso não encontrado |
+| 500 | Internal Server Error | Erro inesperado no servidor |
 
-2. Comandos no Terminal para Publicação:
+---
 
-* Inicializar o repositório local
-git init
+## 📌 Considerações Finais
 
-* Adicionar todos os arquivos
-git add .
+Este projeto foi desenvolvido como parte de uma avaliação prática na área de desenvolvimento back-end, com o objetivo de aplicar conceitos de construção de APIs RESTful, organização arquitetural, persistência de dados e autenticação.
 
-* Criar o commit inicial
-git commit -m "feat: documentacao completa com instrucoes de setup e endpoints"
+O desenvolvimento proporcionou a aplicação prática de tecnologias do ecossistema JavaScript e conceitos fundamentais para a construção de aplicações back-end.
 
-* Renomear a branch principal para main
-git branch -M main
+---
 
-* Conectar ao repositório do GitHub
-git remote add origin <URL_DO_SEU_REPOSITORIO>
+**Desenvolvido por Lucas Saturnino** 🚀
 
-* Enviar os arquivos para o GitHub
-git push -u origin main
-
-
-✨ Projeto desenvolvido como parte da avaliação prática de desenvolvimento back-end.
