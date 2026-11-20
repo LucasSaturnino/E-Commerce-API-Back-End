@@ -5,22 +5,44 @@ exports.searchCategories = async (req, res) => {
   try {
     const { limit = 12, page = 1, fields, use_in_menu } = req.query;
 
-    const where = {};
-    if (use_in_menu !== undefined) {
-      where.use_in_menu = use_in_menu === 'true' || use_in_menu === '1';
+    const parsedLimit = parseInt(limit, 10);
+    const parsedPage = parseInt(page, 10);
+
+    if (
+      Number.isNaN(parsedLimit) ||
+      (parsedLimit < 1 && parsedLimit !== -1) ||
+      Number.isNaN(parsedPage) ||
+      parsedPage < 1
+    ) {
+      return res.status(400).json({ message: 'Parâmetros de paginação inválidos' });
     }
 
-    const attributes = fields ? fields.split(',') : undefined;
-    const parsedLimit = parseInt(limit);
-    const parsedPage = parseInt(page);
-    const offset = (parsedPage - 1) * parsedLimit;
+    const where = {};
+    if (use_in_menu !== undefined) {
+      if (use_in_menu === 'true' || use_in_menu === '1' || use_in_menu === true) {
+        where.use_in_menu = true;
+      } else if (use_in_menu === 'false' || use_in_menu === '0' || use_in_menu === false) {
+        where.use_in_menu = false;
+      } else {
+        return res.status(400).json({ message: 'Valor inválido para use_in_menu' });
+      }
+    }
 
-    const { count, rows } = await Category.findAndCountAll({
+    const attributes = fields
+      ? fields.split(',').map((field) => field.trim()).filter(Boolean)
+      : undefined;
+
+    const queryOptions = {
       where,
-      attributes,
-      limit: parsedLimit > 0 ? parsedLimit : undefined,
-      offset: parsedOffset >= 0 ? offset : 0
-    });
+      ...(attributes ? { attributes } : {})
+    };
+
+    if (parsedLimit !== -1) {
+      queryOptions.limit = parsedLimit;
+      queryOptions.offset = (parsedPage - 1) * parsedLimit;
+    }
+
+    const { count, rows } = await Category.findAndCountAll(queryOptions);
 
     return res.status(200).json({
       data: rows,
@@ -36,9 +58,12 @@ exports.searchCategories = async (req, res) => {
 // GET /v1/category/:id - Buscar categoria por ID
 exports.getCategoryById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const category = await Category.findByPk(id);
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ message: 'ID inválido' });
+    }
 
+    const category = await Category.findByPk(id);
     if (!category) {
       return res.status(404).json({ message: 'Categoria não encontrada' });
     }
@@ -58,7 +83,12 @@ exports.createCategory = async (req, res) => {
       return res.status(400).json({ message: 'Nome e slug são obrigatórios' });
     }
 
-    const category = await Category.create({ name, slug, use_in_menu });
+    const category = await Category.create({
+      name,
+      slug,
+      ...(use_in_menu !== undefined ? { use_in_menu } : {})
+    });
+
     return res.status(201).json(category);
   } catch (error) {
     return res.status(400).json({ message: 'Erro ao criar categoria' });
@@ -68,7 +98,11 @@ exports.createCategory = async (req, res) => {
 // PUT /v1/category/:id - Atualizar categoria (Protegido por JWT)
 exports.updateCategory = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ message: 'ID inválido' });
+    }
+
     const { name, slug, use_in_menu } = req.body;
 
     const category = await Category.findByPk(id);
@@ -76,7 +110,12 @@ exports.updateCategory = async (req, res) => {
       return res.status(404).json({ message: 'Categoria não encontrada' });
     }
 
-    await category.update({ name, slug, use_in_menu });
+    await category.update({
+      ...(name !== undefined ? { name } : {}),
+      ...(slug !== undefined ? { slug } : {}),
+      ...(use_in_menu !== undefined ? { use_in_menu } : {})
+    });
+
     return res.status(204).send();
   } catch (error) {
     return res.status(400).json({ message: 'Erro ao atualizar categoria' });
@@ -86,9 +125,12 @@ exports.updateCategory = async (req, res) => {
 // DELETE /v1/category/:id - Excluir categoria (Protegido por JWT)
 exports.deleteCategory = async (req, res) => {
   try {
-    const { id } = req.params;
-    const category = await Category.findByPk(id);
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ message: 'ID inválido' });
+    }
 
+    const category = await Category.findByPk(id);
     if (!category) {
       return res.status(404).json({ message: 'Categoria não encontrada' });
     }

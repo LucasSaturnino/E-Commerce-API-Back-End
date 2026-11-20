@@ -374,27 +374,42 @@ Parâmetros disponíveis:
 
 ## 🚦 Códigos de Status HTTP
 
-A API utiliza códigos de status HTTP para indicar o resultado das requisições.
+Código	Nome	Significado na API
+200	OK	Requisição realizada com sucesso (consultas e atualizações)
+201	Created	Recurso criado com sucesso no banco de dados
+204	No Content	Requisição concluída com sucesso sem corpo de retorno (edição/exclusão)
+400	Bad Request	Erro de validação, campos obrigatórios ausentes ou senhas divergentes
+401	Unauthorized	Token JWT ausente, inválido ou expirado
+404	Not Found	Recurso não localizado pelo ID informado
+500	Internal Server Error	Falha inesperada no servidor ou no banco de dados
 
-| Código | Status | Significado |
-|:---:|---|---|
-| 200 | OK | Requisição realizada com sucesso |
-| 201 | Created | Recurso criado com sucesso |
-| 204 | No Content | Requisição concluída sem conteúdo de retorno |
-| 400 | Bad Request | Erro de validação ou dados inválidos |
-| 401 | Unauthorized | Token ausente, inválido ou expirado |
-| 404 | Not Found | Recurso não encontrado |
-| 500 | Internal Server Error | Erro inesperado no servidor |
+📤 Guia Passo a Passo do Git e GitHub
 
----
+1. Criar o arquivo .gitignore na raiz do projeto:
 
-## 📌 Considerações Finais
+node_modules/
+.env
 
-Este projeto foi desenvolvido como parte de uma avaliação prática na área de desenvolvimento back-end, com o objetivo de aplicar conceitos de construção de APIs RESTful, organização arquitetural, persistência de dados e autenticação.
 
-O desenvolvimento proporcionou a aplicação prática de tecnologias do ecossistema JavaScript e conceitos fundamentais para a construção de aplicações back-end.
+2. Comandos no Terminal para Publicação:
 
----
+# Inicializar o repositório local
+git init
 
-**Desenvolvido por Lucas Saturnino** 🚀
+# Adicionar todos os arquivos
+git add .
 
+# Criar o commit inicial
+git commit -m "feat: documentacao completa com instrucoes de setup e endpoints"
+
+# Renomear a branch principal para main
+git branch -M main
+
+# Conectar ao repositório do GitHub
+git remote add origin <URL_DO_SEU_REPOSITORIO>
+
+# Enviar os arquivos para o GitHub
+git push -u origin main
+
+
+✨ Projeto desenvolvido como parte da avaliação prática de desenvolvimento back-end.

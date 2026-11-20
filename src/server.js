@@ -1,14 +1,17 @@
+require('dotenv').config();
+
 const app = require('./app');
 const sequelize = require('./config/database');
-require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 
-sequelize.sync().then(() => {
-  console.log('Banco de dados conectado e sincronizado.');
-  app.listen(PORT, () => {
-    console.log(`Servidor executando na porta ${PORT}`);
+sequelize.authenticate()
+  .then(() => {
+    console.log('Banco de dados conectado.');
+    app.listen(PORT, () => {
+      console.log(`Servidor executando na porta ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Erro ao conectar ao banco de dados:', err);
   });
-}).catch(err => {
-  console.error('Erro ao conectar ao banco de dados:', err);
-});
