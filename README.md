@@ -23,6 +23,7 @@ O projeto utiliza arquitetura MVC, autenticação por JSON Web Token (JWT) e cri
 - [Variáveis de Ambiente](#-variáveis-de-ambiente)
 - [Endpoints da API](#-endpoints-da-api)
 - [Exemplos de Requisições](#-exemplos-de-requisições)
+- [Guia de Testes com Postman](#-guia-de-testes-com-postman)
 - [Códigos de Status HTTP](#-códigos-de-status-http)
 - [Considerações Finais](#-considerações-finais)
 
@@ -49,6 +50,7 @@ A aplicação disponibiliza endpoints para operações de cadastro, consulta, at
 ## ⚙️ Funcionalidades
 
 ### 👤 Gerenciamento de usuários
+
 - Cadastro de novos usuários.
 - Validação de campos obrigatórios.
 - Verificação de duplicidade de e-mail.
@@ -56,6 +58,7 @@ A aplicação disponibiliza endpoints para operações de cadastro, consulta, at
 - Consulta, atualização e exclusão de usuários.
 
 ### 🔐 Autenticação e segurança
+
 - Autenticação de usuários por e-mail e senha.
 - Geração de tokens JWT.
 - Proteção de rotas privadas.
@@ -63,6 +66,7 @@ A aplicação disponibiliza endpoints para operações de cadastro, consulta, at
 - Utilização do padrão Bearer Token.
 
 ### 📂 Gerenciamento de categorias
+
 - Cadastro de categorias.
 - Consulta de categorias por identificador.
 - Listagem com paginação.
@@ -70,6 +74,7 @@ A aplicação disponibiliza endpoints para operações de cadastro, consulta, at
 - Controle de exibição no menu por meio do atributo `use_in_menu`.
 
 ### 🛍️ Gerenciamento de produtos
+
 - Cadastro de produtos.
 - Consulta individual por identificador.
 - Listagem com filtros.
@@ -372,44 +377,98 @@ Parâmetros disponíveis:
 
 ---
 
+## 🧪 Guia de Testes com Postman
+
+Para realizar requisições corretamente à API, é importante configurar o Postman de acordo com o tipo de operação.
+
+### 1. Configuração do Body (JSON)
+
+Nas requisições que enviam dados ao servidor (POST e PUT):
+
+1. Acesse a aba **Body**.
+2. Selecione a opção **raw**.
+3. No menu de formato, selecione **JSON**.
+
+O Postman enviará o conteúdo com o cabeçalho `Content-Type: application/json`, permitindo que o Express interprete os dados por meio do middleware `express.json()`.
+
+### 2. Validação da estrutura JSON
+
+Certifique-se de utilizar aspas duplas e respeitar a sintaxe JSON.
+
+Exemplo:
+
+```json
+{
+  "name": "Calçados",
+  "slug": "calcados",
+  "use_in_menu": true
+}
+```
+
+**Atenção:** Evite vírgulas após o último campo do objeto e verifique se todas as chaves e valores estão corretamente delimitados.
+
+### 3. Verificação de dados duplicados
+
+Caso a aplicação ou o banco de dados possua restrições de unicidade, o cadastro de uma categoria com nome ou slug já existente poderá resultar em erro.
+
+Para testar um novo cadastro, utilize valores diferentes:
+
+```json
+{
+  "name": "Roupas",
+  "slug": "roupas",
+  "use_in_menu": true
+}
+```
+
+### 4. Configuração da autenticação JWT
+
+Para acessar endpoints protegidos, configure a autenticação no Postman:
+
+1. Acesse a aba **Authorization**.
+2. Em **Type**, selecione `Bearer Token`.
+3. No campo **Token**, cole o token JWT obtido na autenticação.
+
+**Importante:** Não inclua aspas nem escreva a palavra `Bearer` no campo Token. O próprio Postman adiciona o prefixo automaticamente.
+
+A autenticação deve utilizar o token retornado pelo endpoint:
+
+`POST /v1/user/token`
+
+### 5. Problemas comuns durante os testes
+
+| Problema | Possível solução |
+|---|---|
+| Erro 400 ao enviar dados | Verificar se o Body está configurado como raw e JSON |
+| Objeto recebido vazio (`{}`) | Conferir o formato JSON e o cabeçalho `Content-Type` |
+| Erro ao cadastrar categoria | Verificar se o nome ou slug já existe e se há restrição de unicidade |
+| Erro 401 Unauthorized | Conferir se o token JWT está correto e válido |
+| Falha de autenticação | Verificar se o tipo de autorização está configurado como Bearer Token |
+
+---
+
 ## 🚦 Códigos de Status HTTP
 
-Código	Nome	Significado na API
-200	OK	Requisição realizada com sucesso (consultas e atualizações)
-201	Created	Recurso criado com sucesso no banco de dados
-204	No Content	Requisição concluída com sucesso sem corpo de retorno (edição/exclusão)
-400	Bad Request	Erro de validação, campos obrigatórios ausentes ou senhas divergentes
-401	Unauthorized	Token JWT ausente, inválido ou expirado
-404	Not Found	Recurso não localizado pelo ID informado
-500	Internal Server Error	Falha inesperada no servidor ou no banco de dados
+A API utiliza códigos de status HTTP para indicar o resultado das requisições.
 
-📤 Guia Passo a Passo do Git e GitHub
+| Código | Status | Significado |
+|:---:|---|---|
+| 200 | OK | Requisição realizada com sucesso |
+| 201 | Created | Recurso criado com sucesso |
+| 204 | No Content | Requisição concluída sem conteúdo de retorno |
+| 400 | Bad Request | Erro de validação ou dados inválidos |
+| 401 | Unauthorized | Token ausente, inválido ou expirado |
+| 404 | Not Found | Recurso não encontrado |
+| 500 | Internal Server Error | Erro inesperado no servidor |
 
-1. Criar o arquivo .gitignore na raiz do projeto:
+---
 
-node_modules/
-.env
+## 📌 Considerações Finais
 
+Este projeto foi desenvolvido como parte de uma avaliação prática na área de desenvolvimento back-end, com o objetivo de aplicar conceitos de construção de APIs RESTful, organização arquitetural, persistência de dados e autenticação.
 
-2. Comandos no Terminal para Publicação:
+O desenvolvimento proporcionou a aplicação prática de tecnologias do ecossistema JavaScript e conceitos fundamentais para a construção de aplicações back-end.
 
-# Inicializar o repositório local
-git init
+---
 
-# Adicionar todos os arquivos
-git add .
-
-# Criar o commit inicial
-git commit -m "feat: documentacao completa com instrucoes de setup e endpoints"
-
-# Renomear a branch principal para main
-git branch -M main
-
-# Conectar ao repositório do GitHub
-git remote add origin <URL_DO_SEU_REPOSITORIO>
-
-# Enviar os arquivos para o GitHub
-git push -u origin main
-
-
-✨ Projeto desenvolvido como parte da avaliação prática de desenvolvimento back-end.
+**Desenvolvido por Lucas Saturnino** 🚀
